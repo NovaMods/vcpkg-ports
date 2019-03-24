@@ -9,9 +9,22 @@ endif()
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO NovaMods/foundational
-    REF ff60768054011ce6a436113ed830ed6e86b15c00
-    SHA512 84e1eea981455e5f1f6c17fc7edffd895eb59de425e4dac3981523ea6c4a999940a9e0bcff1d3185ad6e036ed5c9cda340664421b20ee4fa6df9d02183adb95c
+    REF 0056f5921b761b6533628c4ca4d33154273e88db
+    SHA512 658540067e124c1a2fd153a11114463ba7eb798015a72e2ec6ec7d30398c8033609768057122c879ddc4818e9fe6ae7dcefccba1d83c4c475eb15393d8f24ccd
     HEAD_REF master
+)
+
+vcpkg_download_distfile(
+    CMAKE_HELPERS_PATH
+    URLS https://github.com/NovaMods/cmake-helpers/archive/251d3e3917b510113b7466a3cbb84d1c793466c3.zip
+    FILENAME NovaMods-cmake-helpers-251d3e3917b510113b7466a3cbb84d1c793466c3.zip
+    SHA512 bd52eb1ef9b7ae7fe82dae34c508081b2b7cc6f71916c1c440bf05be4bbb4acd3b3e3cbb9be68b85a015afa49e311548f160df17acd86b246b67b5577a41d5e7
+)
+
+vcpkg_extract_source_archive_ex(
+    OUT_SOURCE_PATH CMAKE_HELPERS_SOURCE_PATH
+    ARCHIVE "${CMAKE_HELPERS_PATH}"
+    WORKING_DIRECTORY "${SOURCE_PATH}/external/cmake-helpers"
 )
 
 vcpkg_configure_cmake(
@@ -19,6 +32,7 @@ vcpkg_configure_cmake(
     PREFER_NINJA
     OPTIONS
         -DNOVA_PACKAGE=True
+        "-DCMAKE_MODULE_PATH=${CMAKE_HELPERS_SOURCE_PATH}"
 )
 
 vcpkg_install_cmake()
